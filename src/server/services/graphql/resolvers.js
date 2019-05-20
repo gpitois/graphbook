@@ -36,6 +36,22 @@ export default function resolver() {
           }],
         });
       },
+      postsFeed(root, { page, limit }, context) {
+        let skip = 0;
+        if (page && limit) {
+          skip = page * limit;
+        }
+        let query = {
+          order: [['createdAt', 'DESC']],
+          offset: skip,
+        };
+        if (limit) {
+          query.limit = limit;
+        }
+        return {
+          posts: Post.findAll(query),
+        };
+      },
     },
     RootMutation: {
       addPost(root, { post }, context) {

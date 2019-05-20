@@ -25,6 +25,10 @@ const typeDefinitions = `
     lastMessage: Message
   }
   
+  type PostFeed {
+    posts: [Post]
+  }
+  
   input PostInput {
     text: String!
   }
@@ -59,6 +63,7 @@ const typeDefinitions = `
     posts: [Post]
     chats: [Chat]
     chat(chatId: Int): Chat
+    postsFeed(page: Int, limit: Int): PostFeed
   }
   
   schema {

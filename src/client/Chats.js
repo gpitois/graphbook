@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
+import Loading from './components/loading';
+import Error from './components/error';
 
 const GET_CHATS = gql`{
   chats {
@@ -134,8 +136,8 @@ export default class Chats extends Component {
         <div className="chats">
           <Query query={GET_CHATS}>
             {({ loading, error, data }) => {
-              if (loading) return <p>Loading...</p>;
-              if (error) return error.message;
+              if (loading) return <Loading />;
+              if (error) return <Error><p>{error.message}</p></Error>;
               const { chats } = data;
               return chats.map((chat, i) =>
                 <div key={"chat" + chat.id} className="chat"
@@ -165,8 +167,8 @@ export default class Chats extends Component {
             <Query key={"chatWindow" + chatId} query={GET_CHAT}
                    variables={{ chatId }}>
               {({ loading, error, data }) => {
-                if (loading) return <p>Loading...</p>;
-                if (error) return error.message;
+                if (loading) return <Loading />;
+                if (error) return <Error><p>{error.message}</p></Error>;
                 const { chat } = data;
                 return (
                   <div className="chatWindow">

@@ -51,6 +51,10 @@ const typeDefinitions = `
     addPost (
       post: PostInput!
     ): Post
+    updatePost (
+      post: PostInput!
+      postId: Int!
+    ): Post
     addChat (
       chat: ChatInput!
     ): Chat

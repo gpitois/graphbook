@@ -4,6 +4,7 @@ import '../../assets/css/style.css';
 import Feed from './Feed';
 import Chats from './Chats';
 import { ContextProvider } from './components/utils/Context';
+import './components/fontawesome';
 
 const App = () => {
   const initialState = {

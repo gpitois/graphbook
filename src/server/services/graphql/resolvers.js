@@ -88,6 +88,32 @@ export default function resolver() {
             }
           });
       },
+      deletePost(root, { postId }, context) {
+        return Post.destroy({
+          where: {
+            id: postId,
+          },
+        })
+          .then(function (rows) {
+            if (rows === 1) {
+              logger.log({
+                level: 'info',
+                message: 'Post ' + postId + 'was deleted',
+              });
+              return {
+                success: true,
+              };
+            }
+            return {
+              success: false,
+            };
+          }, function (err) {
+            logger.log({
+              level: 'error',
+              message: err.message,
+            });
+          });
+      },
       addChat(root, { chat }, context) {
         logger.log({
           level: 'info',

@@ -6,7 +6,6 @@ import Chats from './Chats';
 import Bar from './components/bar';
 import { ContextProvider } from './components/utils/Context';
 import './components/fontawesome';
-import { UserProvider } from './components/context/user';
 
 const App = () => {
   const initialState = {
@@ -20,13 +19,11 @@ const App = () => {
         <title>Graphbook - Feed</title>
         <meta name="description" content="Newsfeed of all your friends on Graphbook" />
       </Helmet>
-      <UserProvider>
-        <Bar />
-        <ContextProvider state={state} setState={setState}>
-          <Feed />
-          <Chats />
-        </ContextProvider>
-      </UserProvider>
+      <Bar />
+      <ContextProvider state={state} setState={setState}>
+        <Feed />
+        <Chats />
+      </ContextProvider>
     </div>
   );
 };

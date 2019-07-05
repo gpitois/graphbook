@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import '../../assets/css/style.css';
 import Feed from './Feed';
 import Chats from './Chats';
+import Bar from './components/bar';
 import { ContextProvider } from './components/utils/Context';
 import './components/fontawesome';
 
@@ -18,6 +19,7 @@ const App = () => {
         <title>Graphbook - Feed</title>
         <meta name="description" content="Newsfeed of all your friends on Graphbook" />
       </Helmet>
+      <Bar />
       <ContextProvider state={state} setState={setState}>
         <Feed />
         <Chats />

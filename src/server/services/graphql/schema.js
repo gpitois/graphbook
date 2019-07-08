@@ -36,6 +36,10 @@ const typeDefinitions = `
   type UsersSearch {
     users: [User]
   }
+  
+  type Auth {
+     token: String
+  }
 
   input PostInput {
     text: String!
@@ -72,6 +76,10 @@ const typeDefinitions = `
     addMessage (
       message: MessageInput!
     ): Message
+    login (
+     email: String!
+     password: String!
+    ): Auth
   }
    
   type RootQuery {

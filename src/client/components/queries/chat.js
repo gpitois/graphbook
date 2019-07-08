@@ -1,7 +1,6 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import ChatWindow from '../chat/chatWindow';
 
 import Loading from '../loading';
 import Error from '../error';
@@ -26,7 +25,7 @@ const GET_CHAT = gql`
   }
 `;
 
-const Chat = ({ chatId }) => (
+const ChatQuery = ({ children, chatId }) => (
   <Query
     key={'chatWindow' + chatId}
     query={GET_CHAT}
@@ -36,11 +35,11 @@ const Chat = ({ chatId }) => (
       if (loading) return <Loading />;
       if (error) return <Error><p>{error.message}</p></Error>;
       const { chat } = data;
-      return (
-        <ChatWindow chat={chat} />
-      );
+      return React.Children.map(children, function(child) {
+        return React.cloneElement(child, { chat });
+      });
     }}
   </Query>
 );
 
-export default Chat;
+export default ChatQuery;

@@ -1,31 +1,46 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import '../../assets/css/style.css';
+import './components/fontawesome';
+import LoginRegisterForm from './components/loginregister';
 import Feed from './Feed';
 import Chats from './Chats';
 import Bar from './components/bar';
-import { ContextProvider } from './components/utils/Context';
-import './components/fontawesome';
 
-const App = () => {
-  const initialState = {
-    openChats: [],
+class App extends Component {
+  state = {
+    loggedIn: false
   };
-  const [state, setState] = React.useState(initialState);
 
-  return (
-    <div className="container">
-      <Helmet>
-        <title>Graphbook - Feed</title>
-        <meta name="description" content="Newsfeed of all your friends on Graphbook" />
-      </Helmet>
-      <Bar />
-      <ContextProvider state={state} setState={setState}>
-        <Feed />
-        <Chats />
-      </ContextProvider>
-    </div>
-  );
+  componentWillMount() {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      this.setState({loggedIn: true});
+    }
+  }
+
+  changeLoginState = (loggedIn) => {
+    this.setState({ loggedIn });
+  };
+
+  render () {
+    return (
+      <div className="container">
+        <Helmet>
+          <title>Graphbook - Feed</title>
+          <meta name="description" content="Newsfeed of all your friends on Graphbook"/>
+        </Helmet>
+        {this.state.loggedIn ?
+          <div>
+            <Bar />
+            <Feed />
+            <Chats />
+          </div>
+          : <LoginRegisterForm changeLoginState={this.changeLoginState} />
+        }
+      </div>
+    );
+  }
 };
 
 export default App;

@@ -24,8 +24,9 @@ export default class LoginMutation extends Component {
         {(login, { loading, error}) =>
           React.Children.map(children, function(child) {
             return React.cloneElement(child, { login, loading, error });
-          }) }
+          })
+        }
       </Mutation>
     );
   }
-};
+}

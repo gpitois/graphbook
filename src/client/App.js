@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withApollo } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import '../../assets/css/style.css';
 import './components/fontawesome';
@@ -12,6 +13,15 @@ class App extends Component {
   state = {
     loggedIn: false
   };
+
+  constructor(props) {
+    super(props);
+    this.unsubscribe = props.client.onResetStore(() => this.changeLoginState(false));
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
   componentWillMount() {
     const token = localStorage.getItem('jwt');
@@ -33,7 +43,7 @@ class App extends Component {
         </Helmet>
         {this.state.loggedIn ?
           <CurrentUserQuery>
-            <Bar />
+            <Bar changeLoginState={this.changeLoginState} />
             <Feed />
             <Chats />
           </CurrentUserQuery>
@@ -44,4 +54,4 @@ class App extends Component {
   }
 };
 
-export default App;
+export default withApollo(App);

@@ -15,20 +15,14 @@ export default function resolver() {
         return Post.findAll({ order: [['createdAt', 'DESC']] });
       },
       chats(root, args, context) {
-        return User.findAll().then((users) => {
-          if (!users.length) {
-            return [];
-          }
-          const usersRow = users[0];
-          return Chat.findAll({
-            include: [{
-              model: User,
-              required: true,
-              through: { where: { userId: usersRow.id } },
-            }, {
-              model: Message,
-            }],
-          });
+        return Chat.findAll({
+          include: [{
+            model: User,
+            required: true,
+            through: { where: { userId: context.user.id } },
+          }, {
+            model: Message,
+          }],
         });
       },
       chat(root, { chatId }, context) {
@@ -83,6 +77,9 @@ export default function resolver() {
           users: User.findAll(query),
         };
       },
+      currentUser(root, args, context) {
+        return context.user;
+      },
     },
     RootMutation: {
       addPost(root, { post }, context) {
@@ -91,7 +88,7 @@ export default function resolver() {
           message: 'Post was created',
         });
         return User.findAll().then((users) => {
-          const usersRow = users[0];
+          const usersRow = context.user;
           return Post.create({
             ...post,
           }).then((newPost) => {
@@ -115,7 +112,7 @@ export default function resolver() {
                 level: 'info',
                 message: `Post ${postId} was updated`,
               });
-              return Post.findById(postId);
+              return Post.findByPk(postId);
             }
           });
       },
@@ -166,7 +163,7 @@ export default function resolver() {
           message: 'Message was created',
         });
         return User.findAll().then((users) => {
-          const usersRow = users[0];
+          const usersRow = context.user;
           return Message.create({
             ...message,
           }).then((newMessage) => {

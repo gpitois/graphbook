@@ -64,20 +64,20 @@ const typeDefinitions = `
   type RootMutation {
     addPost (
       post: PostInput!
-    ): Post
+    ): Post @auth
     updatePost (
       post: PostInput!
       postId: Int!
-    ): Post
+    ): Post  @auth
     deletePost (
       postId: Int!
-    ): Response
+    ): Response @auth
     addChat (
       chat: ChatInput!
-    ): Chat
+    ): Chat @auth
     addMessage (
       message: MessageInput!
-    ): Message
+    ): Message @auth
     login (
      email: String!
      password: String!
@@ -90,11 +90,12 @@ const typeDefinitions = `
   }
    
   type RootQuery {
-    posts: [Post]
-    chats: [Chat]
-    chat(chatId: Int): Chat
+    posts: [Post] @auth
+    chats: [Chat] @auth
+    chat(chatId: Int): Chat @auth
     postsFeed(page: Int, limit: Int): PostFeed @auth
     usersSearch(page: Int, limit: Int, text: String!): UsersSearch
+    currentUser: User @auth
   }
   
   schema {

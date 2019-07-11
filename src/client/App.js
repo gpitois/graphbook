@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import '../../assets/css/style.css';
 import './components/fontawesome';
 import LoginRegisterForm from './components/loginregister';
+import CurrentUserQuery from './components/queries/currentUser';
 import Feed from './Feed';
 import Chats from './Chats';
 import Bar from './components/bar';
@@ -31,11 +32,11 @@ class App extends Component {
           <meta name="description" content="Newsfeed of all your friends on Graphbook"/>
         </Helmet>
         {this.state.loggedIn ?
-          <div>
+          <CurrentUserQuery>
             <Bar />
             <Feed />
             <Chats />
-          </div>
+          </CurrentUserQuery>
           : <LoginRegisterForm changeLoginState={this.changeLoginState} />
         }
       </div>

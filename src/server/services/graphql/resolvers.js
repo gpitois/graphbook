@@ -1,9 +1,14 @@
 import Sequelize from 'sequelize';
 import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
+import aws from 'aws-sdk';
 import logger from '../../helpers/logger';
 
 const { JWT_SECRET } = process.env;
+const s3 = new aws.S3({
+  signatureVersion: 'v4',
+  region: 'us-west-1',
+});
 
 export default function resolver() {
   const { db } = this;
@@ -227,6 +232,26 @@ export default function resolver() {
             });
           }
         });
+      },
+      async uploadAvatar(root, { file }, context) {
+        const { stream, filename, mimetype, encoding } = await file;
+        const bucket = 'graphbook';
+        const params = {
+          Bucket: bucket,
+          Key: context.user.id + '/' + filename,
+          ACL: 'public-read',
+          Body: stream,
+        };
+        const response = await s3.upload(params).promise();
+        return User.update(
+          { avatar: response.Location },
+          { where: { id: context.user.id } })
+          .then(() => {
+            return {
+              filename: filename,
+              url: response.Location,
+            };
+          });
       },
     },
     Post: {

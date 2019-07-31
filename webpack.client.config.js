@@ -9,6 +9,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -27,6 +28,7 @@ module.exports = {
   devServer: {
     port: 3000,
     open: true,
+    historyApiFallback: true,
   },
   plugins: [
     new CleanWebpackPlugin({

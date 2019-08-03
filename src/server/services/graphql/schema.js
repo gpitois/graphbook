@@ -7,6 +7,7 @@ const typeDefinitions = `
     id: Int
     avatar: String
     username: String
+    email: String
   }
   
   type Post {
@@ -103,9 +104,10 @@ const typeDefinitions = `
     posts: [Post] @auth
     chats: [Chat] @auth
     chat(chatId: Int): Chat @auth
-    postsFeed(page: Int, limit: Int): PostFeed @auth
+    postsFeed(page: Int, limit: Int, username: String): PostFeed @auth
     usersSearch(page: Int, limit: Int, text: String!): UsersSearch
     currentUser: User @auth
+    user(username: String!): User @auth
   }
   
   schema {

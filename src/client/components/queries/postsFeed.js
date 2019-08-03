@@ -6,8 +6,8 @@ import Error from '../error';
 import Loading from '../loading';
 
 const GET_POSTS = gql`
-  query postsFeed($page: Int, $limit: Int) {
-    postsFeed(page: $page, limit: $limit) {
+  query postsFeed($page: Int, $limit: Int, $username: String) {
+    postsFeed(page: $page, limit: $limit, username: $username) {
       posts {
         id
         text
@@ -23,19 +23,22 @@ const GET_POSTS = gql`
 export default class PostsFeedQuery extends Component {
   getVariables() {
     const { variables } = this.props;
-    let query_variables = {
+    const queryVariables = {
       page: 0,
       limit: 10,
     };
     if (typeof variables !== typeof undefined) {
       if (typeof variables.page !== typeof undefined) {
-        query_variables.page = variables.page;
+        queryVariables.page = variables.page;
       }
       if (typeof variables.limit !== typeof undefined) {
-        query_variables.limit = variables.limit;
+        queryVariables.limit = variables.limit;
+      }
+      if (typeof variables.username !== typeof undefined) {
+        queryVariables.username = variables.username;
       }
     }
-    return query_variables;
+    return queryVariables;
   }
 
   render() {

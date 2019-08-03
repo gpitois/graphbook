@@ -10,7 +10,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     render={props => (
       rest.loggedIn === true
         ? <Component {...props} />
-        : <Redirect to={{ pathname: '/' }} />
+        : <Redirect to={{ pathname: '/', state: { from: props.location }}} />
     )}
   />
 );
@@ -21,7 +21,14 @@ const LoginRoute = ({ component: Component, ...rest }) => (
     render={props => (
       rest.loggedIn === false
         ? <Component {...props} />
-        : <Redirect to={{ pathname: '/app' }} />
+        : (
+          <Redirect
+            to={{ pathname: (typeof props.location.state !== typeof undefined)
+              ? props.location.state.from.pathname
+              : '/app',
+            }}
+          />
+        )
     )}
   />
 );

@@ -29,6 +29,7 @@
     "aws-sdk": "^2.493.0",
     "bcrypt": "^3.0.6",
     "compression": "^1.7.4",
+    "cookies": "^0.7.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "graphql": "^14.2.1",
@@ -37,6 +38,7 @@
     "helmet": "^3.16.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^1.6.5",
+    "node-fetch": "^2.6.0",
     "nodemon": "^1.18.11",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
@@ -50,6 +52,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
     "@babel/core": "^7.4.3",
     "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
@@ -79,6 +82,8 @@
     "webpack": "^4.29.6",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-dev-middleware": "^3.7.0",
+    "webpack-dev-server": "^3.3.1",
+    "webpack-hot-middleware": "^2.25.0"
   }
 }

@@ -8,7 +8,9 @@ import './components/fontawesome';
 
 class App extends Component {
   state = {
-    loggedIn: false
+    loggedIn: (typeof window.__APOLLO_STATE__ !== typeof undefined &&
+      typeof window.__APOLLO_STATE__.ROOT_QUERY !== typeof undefined &&
+      typeof window.__APOLLO_STATE__.ROOT_QUERY.currentUser !== typeof undefined)
   };
 
   constructor(props) {
@@ -18,13 +20,6 @@ class App extends Component {
 
   componentWillUnmount() {
     this.unsubscribe();
-  }
-
-  componentWillMount() {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      this.setState({loggedIn: true});
-    }
   }
 
   changeLoginState = (loggedIn) => {

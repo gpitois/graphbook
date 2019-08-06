@@ -4,8 +4,6 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { createUploadLink } from 'apollo-upload-client';
 
-import gql from 'graphql-tag';
-
 const AuthLink = (operation, next) => {
   const token = localStorage.getItem('jwt');
   if (token) {
@@ -44,22 +42,7 @@ const client = new ApolloClient({
       credentials: 'same-origin',
     }),
   ]),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
 });
-
-client.query({
-  query: gql`
-{
-  posts {
-    id 
-    text 
-    user {
-      avatar
-      username 
-    }
-  }
-}`,
-}).then(result => console.log(result));
-
 
 export default client;

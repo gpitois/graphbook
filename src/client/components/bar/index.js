@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Logout from './logout';
+import LogoutMutation from '../mutations/logout';
 import SearchBar from './search';
 import UserBar from './user';
 import { UserConsumer } from '../context/user';
@@ -17,7 +18,9 @@ export default class Bar extends Component {
         </div>
         <div className="buttons">
           <Home />
-          <Logout changeLoginState={this.props.changeLoginState} />
+          <LogoutMutation>
+            <Logout changeLoginState={this.props.changeLoginState} />
+          </LogoutMutation>
         </div>
       </div>
     );

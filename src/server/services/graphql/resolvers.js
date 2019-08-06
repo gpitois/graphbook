@@ -9,11 +9,11 @@ const s3 = new aws.S3({
   signatureVersion: 'v4',
   region: 'us-west-1',
 });
+const Op = Sequelize.Op;
 
 export default function resolver() {
   const { db } = this;
   const { Post, User, Chat, Message } = db.models;
-  const Op = Sequelize.Op;
   const resolvers = {
     RootQuery: {
       posts(root, args, context) {
@@ -208,6 +208,20 @@ export default function resolver() {
             }
             console.log(`SECRET = ${JWT_SECRET}`);
             const token = JWT.sign({ email, id: user.id }, JWT_SECRET, { expiresIn: '1d' });
+            const cookieExpiration = 1;
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + cookieExpiration);
+            context.cookies.set(
+              'authorization',
+              token,
+              {
+                signed: true,
+                expires: expirationDate,
+                httpOnly: true,
+                secure: false,
+                sameSite: 'strict',
+              },
+            );
             return {
               token,
             };
@@ -237,6 +251,20 @@ export default function resolver() {
                   {
                     expiresIn: '1d',
                   });
+                const cookieExpiration = 1;
+                const expirationDate = new Date();
+                expirationDate.setDate(expirationDate.getDate() + cookieExpiration);
+                context.cookies.set(
+                  'authorization',
+                  token,
+                  {
+                    signed: true,
+                    expires: expirationDate,
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: 'strict',
+                  },
+                );
                 return {
                   token
                 }; });
@@ -263,6 +291,17 @@ export default function resolver() {
               url: response.Location,
             };
           });
+      },
+      logout(root, params, context) {
+        context.cookies.set(
+          'authorization',
+          '',
+          {
+            signed: true, expires: new Date(), httpOnly: true, secure: false, sameSite: 'strict',
+          },
+        ); return {
+          message: true,
+        };
       },
     },
     Post: {

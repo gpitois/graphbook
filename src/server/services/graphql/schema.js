@@ -98,6 +98,7 @@ const typeDefinitions = `
     uploadAvatar (
       file: Upload!
     ): File @auth
+    logout: Response @auth
   }
    
   type RootQuery {

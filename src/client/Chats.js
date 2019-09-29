@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import ChatsFeedQuery from './components/queries/chatsFeed';
-import ChatQuery from './components/queries/chat';
+import ChatsQuery from './components/queries/chatsQuery';
+import ChatQuery from './components/queries/chatQuery';
 import ChatsList from './components/chat/chatList';
 import ChatWindow from './components/chat/chatWindow';
 
@@ -38,9 +38,9 @@ export default class Chats extends Component {
 
     return (
       <div className="wrapper">
-        <ChatsFeedQuery>
+        <ChatsQuery>
           <ChatsList openChat={this.openChat} user={user}/>
-        </ChatsFeedQuery>
+        </ChatsQuery>
         <div className="openChats">
           {openChats.map((chatId, i) =>
             <ChatQuery key={"chatWindow" + chatId} chatId={ chatId }>

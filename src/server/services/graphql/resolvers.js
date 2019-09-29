@@ -2,6 +2,8 @@ import Sequelize from 'sequelize';
 import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
 import aws from 'aws-sdk';
+import { PubSub, withFilter } from 'graphql-subscriptions';
+
 import logger from '../../helpers/logger';
 
 const { JWT_SECRET } = process.env;
@@ -10,6 +12,8 @@ const s3 = new aws.S3({
   region: 'us-west-1',
 });
 const Op = Sequelize.Op;
+
+const pubsub = new PubSub();
 
 export default function resolver() {
   const { db } = this;
@@ -178,18 +182,19 @@ export default function resolver() {
           level: 'info',
           message: 'Message was created',
         });
-        return User.findAll().then((users) => {
-          const usersRow = context.user;
-          return Message.create({
-            ...message,
-          }).then((newMessage) => {
-            return Promise.all([
-              newMessage.setUser(usersRow.id),
-              newMessage.setChat(message.chatId),
-            ]).then(() => {
+        return Message.create({
+          ...message,
+        }).then((newMessage) => {
+          return Promise.all([
+            newMessage.setUser(context.user.id),
+            newMessage.setChat(message.chatId),
+          ])
+            .then(() => {
+              pubsub.publish('messageAdded', {
+                messageAdded: newMessage,
+              });
               return newMessage;
             });
-          });
         });
       },
       login(root, { email, password }, context) {
@@ -302,6 +307,11 @@ export default function resolver() {
         ); return {
           message: true,
         };
+      },
+    },
+    RootSubscription: {
+      messageAdded: {
+        subscribe: () => pubsub.asyncIterator(['messageAdded']),
       },
     },
     Post: {

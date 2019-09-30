@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
 import { Helmet } from 'react-helmet';
+import 'react-toastify/dist/ReactToastify.css';
 import Router from './router';
 import '@synapsestudios/react-drop-n-crop/lib/react-drop-n-crop.min.css';
 import '../../assets/css/style.css';

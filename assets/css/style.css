@@ -422,3 +422,7 @@ form [type=submit] {
     display: inline-block;
     vertical-align: middle;
 }
+
+.Toastify__toast-container--top-left {
+    top: 4em !important;
+}

@@ -51,6 +51,7 @@
     "react-infinite-scroller": "^1.2.4",
     "react-modal": "^3.10.1",
     "react-router-dom": "^5.1.1",
+    "react-toastify": "^5.4.0",
     "sequelize": "^5.19.1",
     "subscriptions-transport-ws": "^0.9.16",
     "winston": "^3.2.1"

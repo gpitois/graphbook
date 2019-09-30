@@ -26,8 +26,7 @@ export default (utils) => (server) => {
       if (typeof authorization !== typeof undefined) {
         var search = 'Bearer';
         var regEx = new RegExp(search, 'ig');
-        const token = authorization.replace(regEx, '')
-          .trim();
+        const token = authorization.replace(regEx, '').trim();
         return jwt.verify(token, JWT_SECRET, function (err, result) {
           if (err) {
             throw new Error('Missing auth token!');

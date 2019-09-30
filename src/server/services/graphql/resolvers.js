@@ -311,7 +311,22 @@ export default function resolver() {
     },
     RootSubscription: {
       messageAdded: {
-        subscribe: () => pubsub.asyncIterator(['messageAdded']),
+        subscribe: withFilter(() => pubsub.asyncIterator(['messageAdded']),
+          (payload, variables, context) => {
+            if (payload.messageAdded.UserId !== context.user.id) {
+              return Chat.findOne({
+                where: {
+                  id: payload.messageAdded.ChatId,
+                },
+                include: [{
+                  model: User,
+                  required: true,
+                  through: { where: { userId: context.user.id } },
+                }],
+              }).then(chat => chat !== null); // return true if chat is found
+            }
+            return false;
+          }),
       },
     },
     Post: {
